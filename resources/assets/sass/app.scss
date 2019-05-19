@@ -1,0 +1,18 @@
+
+@font-face {
+	font-family: "Century-Gothic";
+	src: url("/font/century-gothic/Century-gothic.TTF");
+}
+// Fonts
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap  
+//@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+//@import 'material-icons/iconfont/material-icons';
+@import "components/general";
+@import "components/login";
+@import "components/suggestion";
+@import "components/input-file-auth";

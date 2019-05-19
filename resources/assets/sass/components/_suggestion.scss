@@ -1,0 +1,37 @@
+.suggestion {
+	background-attachment: initial;
+    background-image: url("/img/admin/suggestion/suggestion.jpg");
+    background-size: 100% 110% !important;
+    margin-top: 0px;
+    height: 110vh;
+    margin: 0;
+}
+
+.nav-wrapper {
+  height: 80px !important;
+}
+.backgroun-login {
+	margin-top: 25px;
+}
+.card, .small {
+	padding-left: 36px;
+    padding-right: 36px;
+    margin-top: 100px;
+    margin-right: 50px;
+    width: 70%;
+    height: auto !important;
+    float: right;
+   	h3 {
+   		font-size: 2.22rem;
+   	}
+}
+
+.side-bar-gray {
+	background-color: #f6f6f6;height: 100vh;
+}
+
+@media only screen and (min-width: 601px) {
+	.card.small {
+		width: 280px;
+	}
+}
