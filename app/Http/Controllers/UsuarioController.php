@@ -267,7 +267,7 @@ class UsuarioController extends Controller
             $user_temp->delete();
             $person_temp->delete();
 
-            return view('verify')->with(['msg' => 'Correo electrónico confirmado con éxito', 'url' => url('login')]);
+            return view('login')->with(['msg' => 'Correo electrónico confirmado con éxito', 'url' => url('login')]);
         } else {
             return view('errors.404');
         }
