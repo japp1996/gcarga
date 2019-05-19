@@ -13,7 +13,7 @@
 
     
     Route::group(['prefix' => '/'], function () {
-        Route::get('', 'HomeController@index');
+        Route::get('/index', 'HomeController@index');
         //Quienes Somos
         Route::get('/why', 'HomeController@why');
         //Productos
