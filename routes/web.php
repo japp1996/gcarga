@@ -11,9 +11,9 @@
 |
 */
 
-    Route::resource('/', 'HomeController');
+    
     Route::group(['prefix' => '/'], function () {
-        
+        Route::get('', 'HomeController@index');
         //Quienes Somos
         Route::get('/why', 'HomeController@why');
         //Productos
