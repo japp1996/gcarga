@@ -34,7 +34,11 @@ class DriverRequest extends FormRequest
             "nombre1" => "required",
             "apellido1" => "required",
             "cumple" => "required|date",
-            "email" => "required|email",
+            "email" => [
+                "required",
+                "email",
+                Rule::unique('users')->ignore($this->id, 'id')
+            ],
             "licencia" => "required",
             "carnet_circulacion" => "required",
             "grado_licencia" => "required",

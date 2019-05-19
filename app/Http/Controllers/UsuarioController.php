@@ -232,6 +232,7 @@ class UsuarioController extends Controller
             $person->sex = $person_temp->sex;
             $person->address = $person_temp->address;
             $person->phone = $person_temp->phone;
+            $person->max_vehicle = 1;
             $person->save();
 
             $user->name = $person->first_name.' '.$person->last_name;
@@ -266,8 +267,7 @@ class UsuarioController extends Controller
             $data->delete();
             $user_temp->delete();
             $person_temp->delete();
-
-            return view('content.admin.login')->with(['msg' => 'Correo electrónico confirmado con éxito', 'url' => url('login')]);
+            return redirect('login');
         } else {
             return view('errors.404');
         }
