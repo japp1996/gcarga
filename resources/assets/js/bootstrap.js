@@ -23,6 +23,7 @@ const debug = false
 const linux = true
 
 window.axios = require('axios');
+console.log(window.location.hostname)
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.urlBase = `${window.location.protocol}//${window.location.hostname}/`;
 //window.urlBase += linux ? '/gcarga_light/public/' : '/';

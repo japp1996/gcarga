@@ -17,7 +17,7 @@
     <!--  Android 5 Chrome Color-->
     <meta name="theme-color" content="#EE6E73">
     <!-- CSS-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
     <link href="{{ asset('css/prism.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('css/ghpages-materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" >
