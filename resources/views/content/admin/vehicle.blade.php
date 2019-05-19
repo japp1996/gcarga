@@ -3,9 +3,9 @@
 @section('text', 'Datos del Vehículo')
 @section('content')
 	@if($vehiculo == "")
-		<transport-index :tipo="{{$tipo}}" :marca="{{$marca}}" :peso="{{$peso}}" :volumen="{{$volumen}}"></transport-index>
+		<vehicle-index :tipo="{{$tipo}}" :marca="{{$marca}}" :peso="{{$peso}}" :volumen="{{$volumen}}"></vehicle-index>
 	@else
-		<transport-edit-index :tipo="{{$tipo}}" :marca="{{$marca}}" :peso="{{$peso}}" :volumen="{{$volumen}}" :vehiculo="{{ $vehiculo }}" :fotos="{{ $fotos }}"></transport-edit-index>
+		<vehicle-edit-index :tipo="{{$tipo}}" :marca="{{$marca}}" :peso="{{$peso}}" :volumen="{{$volumen}}" :vehiculo="{{ $vehiculo }}" :fotos="{{ $fotos }}"></vehicle-edit-index>
 	@endif()
 
 @endsection()

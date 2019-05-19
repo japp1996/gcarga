@@ -320,9 +320,8 @@
       
       this.carnet = `${this.url}${this.conductor.circulation_card}`;
       this.foto = `${this.conductor.avatar}`;
-      this.ci = `${this.url}images/company/driver/dni/${this.conductor.dni_digital}`;
-      this.licencia = `${this.url}images/driver/license/${this.conductor.license_digital}`;
-
+      this.ci = `${this.url}${this.conductor.dni_digital}`;
+      this.licencia = `${this.url}${this.conductor.license_digital}`;
 		}
 	}
 </script>

@@ -127,11 +127,12 @@ class DriverController extends Controller
 
         if ($file->getSize() < 5000000) {
             $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $file->move($url.'license/', $file_name);
+            $path = $url.'license/';
+            $file->move($path, $file_name);
             if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url.'license/');
+                ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
             }
-            $licencia = $file_name;
+            $licencia = $path.$file_name;
         } else {
             return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
         }
@@ -210,7 +211,7 @@ class DriverController extends Controller
         return view('content.admin.driver')->with(['vehiculos' => $vehiculos, 'bancos' => $bancos, 'empresas' => $empresas, 'conductor' => $conductor, 'cuenta' => $cuenta]);
     }
 
-    public function update(ConductorRequest $request, $id)
+    public function update(DriverRequest $request, $id)
     {
         $conductor = User::find($id);
         $person = Person::where('user_id', $id)->first();

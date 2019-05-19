@@ -228,7 +228,7 @@ class UsuarioController extends Controller
             $person->user_id = $user->id;
             $person->first_name = $person_temp->first_name;
             $person->last_name = $person_temp->last_name != null ? $person_temp->last_name : '';
-            $person->dni = $user_temp->dni;
+            $person->dni = $person_temp->dni;
             $person->sex = $person_temp->sex;
             $person->address = $person_temp->address;
             $person->phone = $person_temp->phone;
