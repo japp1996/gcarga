@@ -80,69 +80,32 @@
         </form>
       </div>
       <div class="col m4 s4">
-        <!--div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-          <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-            <h2 class="mdl-card__title-text"></h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-            Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-          </div>
-        </div-->
         <div class="demo-separator mdl-cell--1-col"></div>
         <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
           <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
             <ul>
               <li>
                 <div class="col s6 file-field input-field">
-                  <input-file-document :file="foto"  image v-on:file="onCarnetChange"
-                   :type-file="'carnet'" :canDocument="true" :identification="''" :text="'Carnet'"
-                  ></input-file-document>
-      			      
-      			    </div>
-              </li>
-              <li>
-                <div class="col s6 file-field input-field">
-                  <input-file-document :file="ci"  image v-on:file="onCedulaChange"
-                   :type-file="'ci'" :canDocument="true" :identification="''" :text="'Cédula'"
-                  ></input-file-document>
-      			    </div>
-              </li>
-              <li>
-                <div class="col s6 file-field input-field">
-                  <input-file-document :file="licencia" image v-on:file="onLicenciaChange"
-                   :type-file="'license'" :canDocument="true" :identification="''" :text="'Licencia'"
-                  ></input-file-document>
-      			    </div>
-              </li>
-              <li>
-                <div class="col s6 file-field input-field">
-                  <input-file-document :file="foto" image v-on:file="onFotoChange"
-                   :type-file="'foto'" :canDocument="true" :identification="''" :text="'Foto'"
-                  ></input-file-document>
+                  <input-document :styles="{ margin: 'unset' }" v-on:file="onCarnetChange" :file="carnet" image :text="'Carnet'"></input-document>
                 </div>
               </li>
               <li>
-                <!--p>
-                  <label for="doc_verificados">
-                    <input type="checkbox" v-model="form.doc_verificados" id="doc_verificados" class="filled-in" checked="checked" />
-                    <span>Documentos verificados</span>
-                  </label>
-                </p-->
+                <div class="col s6 file-field input-field">
+                  <input-document :styles="{ margin: 'unset' }" v-on:file="onCedulaChange" :file="ci" image :text="'Cedula'"></input-document>
+                </div>
               </li>
-              <!--li>
-                <div class="file-field input-field">
-      			      <div class="btn">
-      			        <span>Identidad</span>
-      			        <input type="file" v-on:change="onCedulaChange">
-      			      </div>
-      			      <div class="file-path-wrapper">
-      			        <input class="file-path validate" type="text">
-      			      </div>
-      			    </div>
-              </li-->
+              <li>
+                <div class="col s6 file-field input-field">
+                  <input-document :styles="{ margin: 'unset' }" v-on:file="onLicenciaChange" :file="licencia" image :text="'Licencia'"></input-document>                  
+                </div>
+              </li>
+              <li>
+                <div class="col s6 file-field input-field">
+                  <input-document :styles="{ margin: 'unset' }" v-on:file="onFotoChange" :file="foto" image :text="'Foto'"></input-document>
+                </div>
+              </li>
+              <li>
+              </li>
             </ul>
           </div>
           <!--div class="mdl-card__actions mdl-card--border">
@@ -180,7 +143,7 @@
             account_type: ""
           },
           bank_id: "",
-          gcfoto: "",
+          avatar: "",
           doc_verificados: false
 				},
         carnet: "",
@@ -206,7 +169,7 @@
         this.form.dni_digital = e.file
       },
       onFotoChange(e){
-        this.form.gcfoto = e.file
+        this.form.avatar = e.file
       },
       formSubmit(e) {
         e.preventDefault()
@@ -231,7 +194,7 @@
         formData.append('email', this.form.bank_user.email)
         formData.append('nro_cuenta', this.form.bank_user.account_number)
         formData.append('banco', this.form.bank_id)
-        formData.append('foto', this.form.gcfoto)
+        formData.append('avatar', this.form.avatar)
         formData.append('tipo_cuenta', this.form.bank_user.account_type)
         
         axios.post('company/driver', formData, config)

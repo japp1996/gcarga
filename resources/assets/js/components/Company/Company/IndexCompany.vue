@@ -192,7 +192,7 @@
         .then(response => {
           if(response.data.result) {
             swal("Exito", response.data.text, "success");
-            window.location = "company"
+            window.location = ""
           } else {
             swal("Información", response.data.text, "info");
           }

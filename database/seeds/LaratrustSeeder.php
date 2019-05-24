@@ -60,6 +60,16 @@ class LaratrustSeeder extends Seeder
                 'password' => bcrypt('12345')
             ]);
 
+            $person = \App\Models\Person::create([
+                'user_id' => $user->id,
+                'dni' => $user->id,
+                'first_name' => $user->name,
+                'last_name' => $user->name,
+                'sex' => '0',
+                'phone' => $user->id,
+                'max_vehicle' => 1,
+            ]);
+
             $user->attachRole($role);
         }
 

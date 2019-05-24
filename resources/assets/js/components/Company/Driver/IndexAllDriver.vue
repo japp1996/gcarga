@@ -8,10 +8,9 @@
             </a>
         </div>
         <div class="row">
-          <table-byte class="col s12" :set-table="setTable" :filters="['gc1_nombre','gc1_apellido']">
+          <table-byte class="col s12" :set-table="setTable" :filters="['first_name','last_name', 'dni']">
               <table-row slot="table-head">
-                  <table-head class="th"></table-head>
-                  <table-head>Conductor</table-head>
+                  <table-head colspan="4">Conductor</table-head>
                   <table-head>Acción</table-head>
               </table-row>
 
@@ -30,16 +29,21 @@
                     <b style="font-size:12px;">{{ item.first_name }} {{ item.last_name }} </b>
                     <br>
                     {{ item.dni }}  
-                    <br>
-                    {{ item.gcplaca }}
                   </table-cell>
                   <table-cell><i class="material-icons prefix">bell</i></table-cell>
                   <table-cell>Valoración 
                     <i class="material-icons prefix">star</i>
                   </table-cell>
                   
-                  <table-cell class="icon-margin"><button class="btn">Programar</button></table-cell>
-                  <table-cell class="icon-margin"><a :href="'driver/'+item.id"><button class="btn">Modificar</button></a>
+                  <table-cell>
+                    <button class="btn-small">Programar</button>
+                  </table-cell>
+                  <table-cell>
+                    <a :href="'driver/'+item.id">
+                      <button class="btn-small">
+                        Modificar
+                      </button>
+                    </a>
                   </table-cell>
                   <table-cell>
                     <div class="switch">
@@ -121,7 +125,7 @@
             return e.gcci == id
         })
 
-        axios.post('admin/conductores/status', {id:id})
+        axios.post('company/drivers_status', {id:id})
         .then(response => {
             if (response.data.result) {
               this.setTable[index].gcstatus = response.data.status

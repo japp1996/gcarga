@@ -13,6 +13,7 @@ use App\Models\Vehicule;
 use App\Models\Configuration;
 use App\Models\Role;
 use App\Models\Auction;
+use App\Models\Vehicle;
 use App\Models\Ticket;
 use App\Models\Person;
 use App\Models\PhoneUsers;

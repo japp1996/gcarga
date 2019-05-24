@@ -28,7 +28,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 if (window.location.hostname == 'gcarga.com') {
     window.urlBase = `${window.location.protocol}//${window.location.hostname}/`;
 } else {
-    window.urlBase = `${window.location.protocol}//${window.location.hostname}/public`;
+    window.urlBase = `${window.location.protocol}//${window.location.hostname}:8080/gcarga_light/public/`;
 }
 //window.urlBase += linux ? '/gcarga_light/public/' : '/';
 //window.urlBase = debug ? window.urlBase + '' : window.urlBase

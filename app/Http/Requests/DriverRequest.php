@@ -43,7 +43,7 @@ class DriverRequest extends FormRequest
             "carnet_circulacion" => "required",
             "grado_licencia" => "required",
             "cedula" => "required",
-            "foto" => "required",
+            "avatar" => "required",
             "tipo_cuenta" => "required",
             "nro_cuenta" => "required|numeric|digits_between:20,20",
             "banco" => "required|numeric"

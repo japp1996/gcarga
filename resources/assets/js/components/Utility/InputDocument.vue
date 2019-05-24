@@ -25,7 +25,7 @@
 
         <div class="center-add-document" v-if="!onlyPreview">
             <div class="btn btn-primary file">
-                <span>Subir</span>
+                <span>{{text != "" ? text : 'Subir' }}</span>
                 <input type="file" id="add-file" @change="_previsualizar($event)">
             </div>
         </div>
@@ -105,6 +105,10 @@ export default {
             type: String,
             default: ""
         },
+        text: {
+            type: String,
+            default: ""
+        },
         video: {
             type: Boolean,
             default: false
@@ -154,7 +158,6 @@ export default {
             let excelType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
             let excelType2  = 'application/vnd.ms-excel';
             let googleViewer = 'https://docs.google.com/gview?url=';
-            console.log(evt.target.files.length)
             if (evt.target.files.length > 0) {
                 this.preview = "";
                 this.file = "";
@@ -202,41 +205,40 @@ export default {
         },
 
         _processFile(){
-            if(this.file != "" || this.file != null) {
-                console.log(this.file)
-                let extension = this.file.split('.').pop();
-                if (this.extension.indexOf(extension) > -1) {
-                    this.file = "";
-
-                    if (extension == 'docx' || extension == 'doc') {
-                        this.classFile = 'word';
-                        this.fileview = "";
-                        return
-                    } 
-
-                    if (extension == 'xlsx' || extension == 'xls') {
-                        this.classFile = 'excel';
-                        this.fileview = "";
-                        return
-                    } 
-
-                    if(extension == 'pptx' || extension == 'ppt') {
-                        this.classFile = 'powerpoint';
-                        this.fileview = "";
+            if(this.file != "") {
+                    let extension = this.file.split('.').pop();
+                    if (this.extension.indexOf(extension) > -1) {
+                        this.file = "";
+    
+                        if (extension == 'docx' || extension == 'doc') {
+                            this.classFile = 'word';
+                            this.fileview = "";
+                            return
+                        } 
+    
+                        if (extension == 'xlsx' || extension == 'xls') {
+                            this.classFile = 'excel';
+                            this.fileview = "";
+                            return
+                        } 
+    
+                        if(extension == 'pptx' || extension == 'ppt') {
+                            this.classFile = 'powerpoint';
+                            this.fileview = "";
+                            return
+                        }
+    
                         return
                     }
-
-                    return
-                }
-
-                if(this.extensionImg.indexOf(extension) > -1){
-                    this.isImage = true;
-                    return this.isImage;
-                }
-                this.isImage = false;
-                this.fileview = this.file;
-
-                return this.fileview;
+    
+                    if(this.extensionImg.indexOf(extension) > -1){
+                        this.isImage = true;
+                        return this.isImage;
+                    }
+                    this.isImage = false;
+                    this.fileview = this.file;
+                    
+                    return this.fileview;
             }else{
                 this.preview = "";
                 this.file = "";

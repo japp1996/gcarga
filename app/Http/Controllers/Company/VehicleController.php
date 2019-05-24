@@ -49,67 +49,113 @@ class VehicleController extends Controller
             return response()->json(['result' => false, 'text' => 'No puede registrar mas vehiculos del maximo permitido por su empresa']);
         } else {
             $url = "images/company/vehicles/";
-            
-            // Init: Procesar foto
-            
-            if($request->hasFile('carnet_circulacion')) {
                 
-                $carnet = $url.'circulation_card/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                //ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url);
-                Intervention::make($request->file('carnet_circulacion'))->save($carnet, 70);
-            }
-        
-            if($request->hasFile('seguro')) {
-                $seguro = $url.'asurance/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('seguro'))->save($seguro, 70);
-            }
-            if($request->hasFile('titulo_propiedad')) {
-                $titulo_propiedad = $url.'property_title/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('titulo_propiedad'))->save($titulo_propiedad, 70);
-            }
-            if($request->hasFile('fotos')) {
-                $fotos = $url.'photo/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('fotos'))->save($fotos, 70);
-            }
-            // End: Procesar foto
-            //CARNET
-            //SEGURO
-            /*$file = $request->file('seguro');
-            $seguro = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $file->move($url, $seguro);
-            if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url);
-            }
-            $seguro = $seguro;
-            
-            //TITULO
-            $file = $request->file('titulo_propiedad');
-            $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $file->move($url, $file_name);
-            if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url);
-            }
-            $titulo_propiedad = $file_name;
+            $carnet = "";
+            $seguro = "";
+            $titulo_propiedad = "";
+            $foto = "";
 
-            //FOTO
-            $file = $request->file('fotos');
-            $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $file->move($url, $file_name);
-            if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url);
+            // CARNET
+            if ($request->hasFile('carnet_circulacion')) {    
+                $file = $request->file('carnet_circulacion');
+                $format = strtolower($file->getClientOriginalExtension());
+                
+                if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                    return response()->json(['error' => 'El formato de carnet de circulación es incorrecto. Permitimos png, jpg y pdf'],422);
+                }
+
+                if ($file->getSize() < 5000000) {
+                    $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
+                    $path = $url.'circulation_card/';
+                    $file->move($path, $file_name);
+                    if($file->getClientOriginalExtension() != "pdf") {
+                        ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
+                    }
+                    $carnet = $path.$file_name;
+                } else {
+                    return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+                }
             }
-            $fotos = $file_name;*/
+
+            // SEGURO
+
+            if($request->hasFile('seguro')) {
+                $file = $request->file('seguro');
+                $format = strtolower($file->getClientOriginalExtension());
+                if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                    return response()->json(['error' => 'El formato de la foto es incorrecto. Permitimos png, jpg y pdf'],422);
+                }
+
+                if ($file->getSize() < 5000000) {
+                    $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
+                    $path = $url.'asurance/';
+                    $file->move($path, $file_name);
+                    if($file->getClientOriginalExtension() != "pdf") {
+                        ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
+                    }
+                    $seguro = $path.$file_name;
+                } else {
+                    return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+                }
+            }
+
+            // TITULO PROPIEDAD
+            
+            if($request->hasFile('titulo_propiedad')) {
+                
+                $file = $request->file('titulo_propiedad');
+                $format = strtolower($file->getClientOriginalExtension());
+                if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                    return response()->json(['error' => 'El formato de la foto es incorrecto. Permitimos png, jpg y pdf'],422);
+                }
+
+                if ($file->getSize() < 5000000) {
+                    $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
+                    $path = $url.'property_title/';
+                    $file->move($path, $file_name);
+                    if($file->getClientOriginalExtension() != "pdf") {
+                        ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
+                    }
+                    $titulo_propiedad = $path.$file_name;
+                } else {
+                    return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+                }
+
+            }
+
+            // FOTO
+
+            if($request->hasFile('fotos')) {
+                $file = $request->file('fotos');
+                $format = strtolower($file->getClientOriginalExtension());
+                if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                    return response()->json(['error' => 'El formato de la foto es incorrecto. Permitimos png, jpg y pdf'],422);
+                }
+
+                if ($file->getSize() < 5000000) {
+                    $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
+                    $path = 'avatars/';
+                    $file->move($path, $file_name);
+                    if($file->getClientOriginalExtension() != "pdf") {
+                        ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
+                    }
+                    $foto = $path.$file_name;
+                } else {
+                    return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+                }
+            }
             
             $transporte = new Vehicle;
             $transporte->license_plate = $request->gcplaca;
             $transporte->brand_id = $request->marca;
             $transporte->model_id = $request->modelo;
+            $transporte->user_id = $request->user_id;
             $transporte->color = $request->color;
             $transporte->year = $request->anio;
             $transporte->transport_id = $request->tipo;
             $transporte->bulk_id = $request->bulk_id;
             $transporte->weight_id = $request->weight_id;
-            $transporte->capacity = $request->capacidad;
+            //$transporte->capacity = $request->capacidad;
 
             $transporte->serial = $request->serial;
             $transporte->asurance = $seguro;
@@ -127,7 +173,7 @@ class VehicleController extends Controller
 
             $transporte_foto = new VehiclePhoto;
             $transporte_foto->vehicle_id =  $transporte->id;
-            $transporte_foto->name = $fotos;
+            $transporte_foto->name = $foto;
             $transporte_foto->save();
 
             return response()->json(['result' => true, 'text' => 'Transporte Registrado con éxito']);
@@ -164,7 +210,9 @@ class VehicleController extends Controller
         $tipo = Transport::get();
         $peso = Weight::get();
         $volumen = Bulk::get();
-        $vehiculo = Vehicle::where('id', $id)->first();
+        $vehiculo = Vehicle::with(['user' => function($us){
+            $us->select('id', 'name');
+        }])->where('id', $id)->first();
         $fotos = VehiclePhoto::where('vehicle_id', $id)->get();
 
         return view('content.admin.vehicle')->with(['marca' => $marca, 'tipo' => $tipo, 'peso' => $peso, 'volumen' => $volumen, 'empresas' => $empresas, 'vehiculo' => $vehiculo, 'fotos' => $fotos]);
@@ -173,32 +221,77 @@ class VehicleController extends Controller
     public function update(Request $request, $id)
     {
         $transporte = Vehicle::find($id);
+        $photoVeh = VehiclePhoto::where('vehicle_id', $id)->first();
         $url = "images/company/vehicles/";
         
-        $carnet = $request->circulation_card;
-        if ($transporte->circulation_card != $request->circulation_card) {
-            if($request->hasFile('circulation_card')) {
-                
-                $carnet = $url.'circulation_card/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                //ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $url);
-                Intervention::make($request->file('circulation_card'))->save($carnet, 70);
+        $seguro = $transporte->asurance;
+        $carnet = $transporte->circulation_card;
+        $titulo_propiedad = $transporte->property_title;
+        $fotos = $photoVeh->name;
+
+        // CARNET
+        if ($request->hasFile('carnet_circulacion')) {    
+            $file = $request->file('carnet_circulacion');
+            $format = strtolower($file->getClientOriginalExtension());
+            
+            if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                return response()->json(['error' => 'El formato de carnet de circulación es incorrecto. Permitimos png, jpg y pdf'],422);
             }
-        }
-        
-        $seguro = $request->seguro;
-        if ($transporte->asurance != $request->seguro){
-            if($request->hasFile('seguro')) {
-                $seguro = $url.'asurance/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('seguro'))->save($seguro, 70);
+
+            if ($file->getSize() < 5000000) {
+                $file_name = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
+                $path = $url.'circulation_card/';
+                $file->move($path, $file_name);
+                if($file->getClientOriginalExtension() != "pdf") {
+                    ResizeImage::dimenssion($file_name, $file->getClientOriginalExtension(), $path);
+                }
+                $carnet = $path.$file_name;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
             }
         }
 
-        $titulo_propiedad = $request->titulo_propiedad;
-        if ($transporte->property_title != $request->titulo_propiedad){
-            if($request->hasFile('titulo_propiedad')) {
-                $titulo_propiedad = $url.'property_title/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('titulo_propiedad'))->save($titulo_propiedad, 70);
+        // SEGURO
+        if($request->hasFile('seguro')) {
+            $file = $request->file('seguro');
+            $format = strtolower($file->getClientOriginalExtension());
+            if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                return response()->json(['error' => 'El formato de seguro es incorrecto. Permitimos png, jpg y pdf'],422);
             }
+
+            if ($file->getSize() < 5000000) {
+                $file_name = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = $url.'asurance/';
+                $file->move($path, $file_name);
+                if($file->getClientOriginalExtension() != "pdf") {
+                    ResizeImage::dimenssion($file_name, $format, $path);
+                }
+                $seguro = $path.$file_name;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+            }
+        }
+
+        // TITULO PROPIEDAD 
+        if($request->hasFile('titulo_propiedad')) {
+            $file = $request->file('titulo_propiedad');
+            $format = strtolower($file->getClientOriginalExtension());
+            if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                return response()->json(['error' => 'El formato del titulo de propiedad es incorrecto. Permitimos png, jpg y pdf'],422);
+            }
+
+            if ($file->getSize() < 5000000) {
+                $file_name = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = $url.'property_title/';
+                $file->move($path, $file_name);
+                if($format != "pdf") {
+                    ResizeImage::dimenssion($file_name, $format, $path);
+                }
+                $titulo_propiedad = $path.$file_name;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+            }
+
         }
 
         $transporte->brand_id = $request->marca;
@@ -208,8 +301,8 @@ class VehicleController extends Controller
         $transporte->color = $request->color;
         $transporte->year = $request->anio;
         $transporte->transport_id = $request->tipo;
-        //$transporte->gctamano = $request->tamano;
-        $transporte->capacity = $request->capacidad;
+        $transporte->user_id = $request->user_id;
+        //$transporte->capacity = $request->capacidad;
        
         //$transporte->tipo_capacidad = $request->tipo_capacidad;
        
@@ -220,9 +313,7 @@ class VehicleController extends Controller
         
         $transporte->status = '1';
 
-        //$request->doc_verificado = $request->doc_verificado == true || $request->doc_verificado == 1 ? 1 : 0;
         //$request->carga_asegurada = $request->carga_asegurada == true || $request->carga_asegurada == 1 ? 1 : 0; 
-        $transporte->verified_docs = $request->doc_verificado == true || $request->doc_verificado == 1 ? 1 : 0;
         $transporte->insured = $request->insured == true || $request->insured == 1 ? 1 : 0;
         //$transporte->gccarga_asegurada = $request->carga_asegurada;
         $transporte->save();
@@ -231,14 +322,29 @@ class VehicleController extends Controller
         $transporte_foto->name . ' ' . $request->fotos;
         if ($transporte_foto->name != $request->fotos) {
             
-            $odlFile = $transporte_foto->name;
-            if($request->hasFile('fotos')) {
-                $fotos = $url.'photo/'.substr(str_replace(array('/','.'),array('',''),bcrypt(strtotime(date('Y-m-d H:i:s')))),7,32).'.jpg';
-                Intervention::make($request->file('fotos'))->save($fotos, 70);
-            }
-            File::delete(public_path($odlFile));
-            $transporte_foto->name = $fotos;
+            // FOTO
 
+            if($request->hasFile('fotos')) {
+                $file = $request->file('fotos');
+                $format = strtolower($file->getClientOriginalExtension());
+                if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
+                    return response()->json(['error' => 'El formato de la foto es incorrecto. Permitimos png, jpg y pdf'],422);
+                }
+
+                if ($file->getSize() < 5000000) {
+                    $file_name = SetNameImage::set($file->getClientOriginalName(), $format);
+                    $path = 'avatars/';
+                    $file->move($path, $file_name);
+                    if($format != "pdf") {
+                        ResizeImage::dimenssion($file_name, $format, $path);
+                    }
+                    $fotos = $path.$file_name;
+                } else {
+                    return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+                }
+            }
+
+            $transporte_foto->name = $fotos;
             $transporte_foto->vehicle_id =  $id;
             $transporte_foto->save();
         }    
@@ -257,6 +363,15 @@ class VehicleController extends Controller
         $conductor->save();*/
 
         return response()->json(['result' => true, 'status' => $tranport->status]);
+    }
+
+    public function drivers(Request $request)
+    {
+        $drivers = User::whereDoesntHave('vehicle')
+        ->where('user_id', Auth::user()->id)
+        ->get();
+        
+        return response()->json($drivers);
     }
 
     public function delete()

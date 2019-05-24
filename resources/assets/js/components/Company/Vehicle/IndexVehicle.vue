@@ -32,16 +32,7 @@
                   {{ modelo.name }}</option>
                 </select>
               </div>
-                
-                <!--div class="input-field col s4">
-                  <select v-model="form.modelo" id="modelo">
-                    <option value="" selected></option>
-                    <option v-for="(modelos, key, i) in modelo_t" > {{i}} {{key}} {{ modelos.gcnombre }}</option>
-                  </select>
-                  <label for="modelo">Escoge el modelo</label>
-                </div-->
                 <div class="input-field col s4">
-                    <!--i class="material-icons prefix">email</i-->                    
                     <input type="text" id="color" v-model="form.color">
                     <label for="color">Color</label>
                 </div>
@@ -73,8 +64,11 @@
               </select>
             </div>
             <div class="input-field col s6">
-              <textarea id="capacidad" v-model="form.capacity" class="materialize-textarea"></textarea>
-              <label for="capacidad">Capacidad de carga</label>
+              <select class="browser-default" v-model="form.user_id" id="user_id">
+                <option value="" selected> Conductor </option>
+                <option v-for="(driver,i) in drivers" :key="i" :value="driver.id">
+                {{ driver.name }}</option>
+              </select>
             </div>
           </div>
           <div class="row">
@@ -93,17 +87,6 @@
         </form>
       </div>
       <div class="col s4 m4">
-        <!--div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-          <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-            <h2 class="mdl-card__title-text"></h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-            Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-          </div>
-        </div-->
         <div class="demo-separator mdl-cell--1-col"></div>
         <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
           <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
@@ -137,12 +120,13 @@
                   ></input-file-document>
       			    </div>
               </li>
-              <p>
+              <!--p>
                 <label>
                   <input type="checkbox" v-model="form.verified_docs" class="filled-in" checked="checked" />
                   <span>Documentos verificados</span>
                 </label>
-              </p>
+              </p-->
+              
               <p>
                 <label>
                   <input type="checkbox" v-model="form.insured" class="filled-in" checked="checked" />
@@ -167,6 +151,7 @@
         modelo_t: {},
         bulk_t: {},
         weight_t: {},
+        drivers: [],
         sending: false,
         url: urlBase,
         form: {
@@ -184,9 +169,10 @@
 					property_title: "",
 					asurance: "",
 					circulacion_card: "",
-          verified_docs: "",
+          //verified_docs: "",
           carga_asegurada: "",
-          fotos: {}
+          fotos: {},
+          insured:false
 				},
         carnet: "",
         titulo: "",
@@ -223,6 +209,16 @@
           this.modelo_t = {}
         })
       },
+      drivers_availables() {
+        axios.post(`${this.url}company/vehicles/drivers-available`)
+        .then(response => {
+          console.log(response)
+          this.drivers = response.data
+        })
+        .catch(error => {
+          this.drivers = []
+        })
+      },
       onFotoChange(e) {
         this.form.fotos = e.file
       },
@@ -253,6 +249,7 @@
         formData.append('modelo', this.form.model_id)
         formData.append('bulk_id', this.form.bulk_id)
         formData.append('weight_id', this.form.weight_id)
+        formData.append('user_id', this.form.user_id)
         formData.append('color', this.form.color)
         formData.append('anio', this.form.year)
         formData.append('capacidad', this.form.capacity)
@@ -262,7 +259,7 @@
         formData.append('seguro', this.form.asurance)
         formData.append('carnet_circulacion', this.form.circulacion_card)
         formData.append('fotos', this.form.fotos)
-        formData.append('doc_verificado', this.form.verified_docs)
+        //formData.append('doc_verificado', this.form.verified_docs)
         formData.append('insured', this.form.insured)
 
         this.sending = true
@@ -295,7 +292,7 @@
     },
 		mounted() {
       this.marca_t = this.marca
-      console.log(this.marca_t)
+      this.drivers_availables()
       this.tipo_t = this.tipo
       this.tamano_t = this.tamano
       this.bulk_t = this.volumen

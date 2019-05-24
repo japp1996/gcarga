@@ -13,6 +13,7 @@
                   <table-head width="10%"></table-head>
                   <table-head class="th">Placa </table-head>
                   <table-head>Marca</table-head>
+                  <table-head>Conductor</table-head>
                   <table-head width="5%" colspan="2">Acción</table-head>
               </table-row>
 
@@ -20,6 +21,7 @@
                   <table-cell> <img class="circle" :src="url+item.fotos.name" width="100%" alt=""> </table-cell>
                   <table-cell>{{item.license_plate}}</table-cell>
                   <table-cell>{{item.marca.name}}</table-cell>
+                  <table-cell>{{item.user == null ? 'SIN ASIGNAR' : item.user.name }}</table-cell>
                   <table-cell class="icon-margin"><button class="btn">Programar</button></table-cell>
                   <table-cell class="icon-margin"><a :href="'vehicle/'+item.id" class="btn">Modificar</a></table-cell>
                   <table-cell>

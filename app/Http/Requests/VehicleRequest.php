@@ -36,7 +36,7 @@ class VehicleRequest extends FormRequest
             "modelo" => "required",
             "color" => "required",
             "anio" => "required|numeric",
-            "capacidad" => "required|numeric",
+            //"capacidad" => "required|numeric",
             //"tipo_capacidad" => "required",
             "serial" => "required|alpha_dash",
             //"titulo_propiedad" => "required",
@@ -70,7 +70,7 @@ class VehicleRequest extends FormRequest
         return [
             'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute no puede contener menos de :min caracteres',
-            'unique' => 'Ya existe un Usuario registrado con igual :attribute',
+            'unique' => 'Ya existe un Vehiculo registrado con igual :attribute',
             'email' => 'El campo :attribute debe tener formate de correo ej. nombrecorreo@dominio.com',
             'size' => ':attribute no puede pesar más de 4mb',
             'alpha_dash' => 'El campo :attribute debe tener caracteres alfanuméricos, así como guiones y guiones bajos.',

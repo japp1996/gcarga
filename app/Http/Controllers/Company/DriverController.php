@@ -77,7 +77,7 @@ class DriverController extends Controller
         /**
          * FOTO DE PERFIL DEL CONDUCTOR
          */
-        $file = $request->file('foto');
+        $file = $request->file('avatar');
         $format = strtolower($file->getClientOriginalExtension());
         if ($format != 'jpg' && $format !=  'pdf' && $format !=  'jpeg' && $format != 'png') {
             return response()->json(['error' => 'El formato de la foto es incorrecto. Permitimos png, jpg y pdf'],422);
@@ -195,7 +195,24 @@ class DriverController extends Controller
     {
         session()->forget('accessAuth');
         $cuenta = BankUser::where('user_id', $id)->first();
-        $conductor = User::join('persons', 'persons.user_id', 'users.id')->where('users.id', $id)->first();
+        $conductor = User::select(
+            'users.id',
+            'persons.first_name',
+            'persons.last_name',
+            'persons.dni',
+            'persons.sex',
+            'persons.birthday',
+            'persons.phone',
+            'persons.address',
+            'persons.license_digital',
+            'persons.dni_digital',
+            'users.avatar',
+            'persons.circulation_card', 
+            'persons.license_grade'
+        )
+        ->join('persons', 'persons.user_id', 'users.id')
+        ->where('users.id', $id)
+        ->first();
         $vehiculos = Vehicle::select('license_plate','user_id', 'brand_id')->with([
             'marca' => function($query) {
                 $query->with(['modelo']);
@@ -214,60 +231,81 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $conductor = User::find($id);
-        $person = Person::where('user_id', $id)->first();
+        $person = Person::where('user_id', $request->id)->first();
         $cuenta = BankUser::where('user_id', $id)->first();
 
         $url = "images/company/drivers/";
 
-        if ($person->circulation_carnet != $request->carnet_circulacion) {
-            $odlFile = $person->circulation_carnet;
+        if ($person->circulation_card != $request->carnet_circulacion) {
+            $odlFile = $person->circulation_card;
             $file = $request->file('carnet_circulacion');
-            $carnet = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $path = $url.'circulation_carnet/';
-            $file->move($path, $carnet);
-            if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($carnet, $file->getClientOriginalExtension(), $path);
-            }
-            File::delete(public_path($path.$odlFile));
-            $person->circulation_carnet = $carnet;                       
+            if ($file->getSize() < 5000000) {
+                $format = strtolower($file->getClientOriginalExtension());       
+                $carnet = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = $url.'circulation_carnet/';
+                $file->move($path, $carnet);
+                if($format != "pdf") {
+                    ResizeImage::dimenssion($carnet, $format, $path);
+                }
+                File::delete(public_path($path.$odlFile));
+                $person->circulation_card = $path.$carnet;           
+            } else {
+                return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);
+            }            
         }
 
-        if ($conductor->avatar != $request->foto) {
+        if ($conductor->avatar != $request->avatar) {
             $odlFile = $conductor->avatar;
-            $file = $request->file('foto');
-            $foto = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $path = 'avatar/';
-            $file->move($path, $foto);
-            if($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($seguro, $file->getClientOriginalExtension(), $path);
+            $file = $request->file('avatar');
+            if ($file->getSize() < 5000000) {
+                $format = strtolower($file->getClientOriginalExtension());            
+                $foto = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = 'avatars/';
+                $file->move($path, $foto);
+                if($file->getClientOriginalExtension() != "pdf") {
+                    ResizeImage::dimenssion($foto, $format, $path);
+                }
+                File::delete(public_path($path.$odlFile));
+                $conductor->avatar = $path.$foto;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para la foto es de 2 MB'],422);
             }
-            File::delete(public_path($path.$odlFile));
-            $conductor->avatar = $foto;
         }
 
         if ($person->license_digital != $request->licencia) {
             $odlFile = $person->gclicencia;
             $file = $request->file('licencia');
-            $licencia = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $path = $url.'license/';
-            $file->move($path, $licencia);
-            if ($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($seguro, $file->getClientOriginalExtension(), $path);
-            }
-            File::delete(public_path($path.$odlFile));
-            $person->license_digital = $licencia;   
+            if ($file->getSize() < 5000000) {
+                $format = strtolower($file->getClientOriginalExtension());
+                $licencia = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = $url.'license/';
+                $file->move($path, $licencia);
+                if ($format != "pdf") {
+                    ResizeImage::dimenssion($licencia, $format, $path);
+                }
+                File::delete(public_path($path.$odlFile));
+                $person->license_digital = $path.$licencia;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para la licencia es de 2 MB'],422);
+            }               
         }
         
-        if ($person->dni != $request->cedula) {
-            $odlFile = $person->dni;
+        if ($person->dni_digital != $request->cedula) {
+            $odlFile = $person->dni_digital;
             $file = $request->file('cedula');
-            $cedula = SetNameImage::set($file->getClientOriginalName(), $file->getClientOriginalExtension());
-            $file->move($url, $cedula);
-            if ($file->getClientOriginalExtension() != "pdf") {
-                ResizeImage::dimenssion($seguro, $file->getClientOriginalExtension(), $url);
+            if ($file->getSize() < 5000000) {
+                $format = strtolower($file->getClientOriginalExtension());
+                $cedula = SetNameImage::set($file->getClientOriginalName(), $format);
+                $path = $url.'dni/';
+                $file->move($path, $cedula);
+                if ($format != "pdf") {
+                    ResizeImage::dimenssion($cedula, $format, $path);
+                }
+                File::delete(public_path($path.$odlFile));
+                $person->dni_digital = $path.$cedula;
+            } else {
+                return response()->json(['error' => 'El tamano maximo para la licencia es de 2 MB'],422);
             }
-            File::delete(public_path($url.$odlFile));
-            $person->dni = $cedula; 
         }
 
         $person->first_name = $request->nombre1;
@@ -278,7 +316,7 @@ class DriverController extends Controller
         $person->phone = $request->phone;
         $person->license_grade = $request->grado_licencia;
 
-        $conductor->birthday = Carbon::parse($request->cumple)->format('Y-m-d');
+        $person->birthday = Carbon::parse($request->cumple)->format('Y-m-d');
         $conductor->email = $request->email;
         
         $cuenta = BankUser::where('user_id', $id)->first();
@@ -297,18 +335,28 @@ class DriverController extends Controller
 
         return response()->json(['result' => true, 'text' => 'El conductor ha sido actualizado de manera exitosa']);
     }
+
+    public function getFiles(Request $request)
+    {
+        $driver = User::join('persons', 'persons.user_id', 'users.id')
+        ->where('users.id', $request->id)
+        ->first();
+        return response()->json(['result' => true, 'files' => $driver]);
+    }
     
     public function status(Request $request)
     {
-        $conductor = Conductor::find($request->id);
-        $conductor->gcstatus = $conductor->gcstatus == '0' ? '1' : '0';
+        $conductor = User::find($request->id);
+        $conductor->status = $conductor->status == '0' ? '1' : '0';
         $conductor->save();
 
-        $transporte = Transporte::find($conductor->gcplaca);
-        $transporte->gcconductor = " ";
-        $transporte->save();
+        $transporte = Vehicle::where('user_id', $conductor->id)->first();
+        if (!is_null($transporte)){
+            $transporte->user_id = NULL;
+            $transporte->save();
+        }
 
-        return response()->json(['result' => true, 'status' => $conductor->gcstatus]);
+        return response()->json(['result' => true, 'status' => $conductor->status]);
     }
 
     public function delete()

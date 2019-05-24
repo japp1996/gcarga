@@ -73,13 +73,15 @@
 		Route::get('/vehicles', 'VehicleController@all');
 		Route::post('/vehicles/status', 'VehicleController@status');
 		Route::post('/vehiclesModel', 'VehicleController@modelo');
-		Route::post('/vehicles/vehiclesModel', 'VehicleController@modelo');
+        Route::post('/vehicles/vehiclesModel', 'VehicleController@modelo');
+        Route::post('/vehicles/drivers-available', 'VehicleController@drivers');
 
 		//Conductor
 		Route::resource('/driver', 'DriverController');
 		Route::get('/drivers', 'DriverController@all');
 		Route::post('/drivers/{id}', 'DriverController@update');
-        Route::post('/drivers/status', 'DriverController@status');
+        Route::post('/drivers_status', 'DriverController@status');
+        Route::post('/driver_files', 'DriverController@getFiles');
         
 		//Contraseña
 		Route::get('/password', 'PasswordController@index');
