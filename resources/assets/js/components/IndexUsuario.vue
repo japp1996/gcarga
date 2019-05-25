@@ -139,7 +139,7 @@
 		},
 		methods: {
 			ajax() {
-				if(!this.form.terms) {
+				/*if(!this.form.terms) {
 					swal("", "Primero debe aceptar los terminos y condiciones", "info");
 					return false;
 				}
@@ -181,7 +181,7 @@
 							icon: "warning",
 							button: false
 						})
-			  	})
+			  	})*/
 			},
 			_getFileProfile(file, type) {
 					this.form.avatar = file.file
