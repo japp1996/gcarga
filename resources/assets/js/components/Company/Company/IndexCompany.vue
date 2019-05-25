@@ -201,7 +201,7 @@
           this.sending=false
           if(response.data.result) {
             swal("Exito", response.data.text, "success");
-            window.location = ""
+            window.location = this.url+"company"
           } else { 
             swal("Información", response.data.text, "info");
           }
