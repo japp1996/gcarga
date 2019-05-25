@@ -46,7 +46,7 @@ class DriverRequest extends FormRequest
             "avatar" => "required",
             "tipo_cuenta" => "required",
             "nro_cuenta" => "required|numeric|digits_between:20,20",
-            "banco" => "required|numeric"
+            "banco" => "required|numeric",
         ];
     }
     

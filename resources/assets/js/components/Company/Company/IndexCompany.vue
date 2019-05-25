@@ -202,7 +202,7 @@
           if(response.data.result) {
             swal("Exito", response.data.text, "success");
             window.location = ""
-          } else {
+          } else { 
             swal("Información", response.data.text, "info");
           }
         })

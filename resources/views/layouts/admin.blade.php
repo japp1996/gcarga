@@ -70,7 +70,7 @@
               <input type="password" autocomplete="off" id="passwordAuthCompany" class="col s12 m12">
               <label for="passwordAuthCompany">Ingrese la Contraseña</label>
             </div>
-          </div>
+          </div> 
           <div class="modal-footer">
               <button type="submit" class="waves-effect waves-green btn btn-flat" >Aceptar</a>
           </div>

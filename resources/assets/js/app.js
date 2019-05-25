@@ -106,7 +106,7 @@ const app = new Vue({
             .then(this.onSuccess)
             .catch(error => this.errors.record(error.response.data.errors));
          },
-      },
+      }, 
       data: {
         defaultColor: '#FF0000'
       }

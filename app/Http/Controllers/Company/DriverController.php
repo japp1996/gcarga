@@ -312,7 +312,7 @@ class DriverController extends Controller
         $person->last_name = $request->apellido1;
         
         $person->sex = $request->sex;
-        $person->address = $request->address;
+        $person->address = $request->address; 
         $person->phone = $request->phone;
         $person->license_grade = $request->grado_licencia;
 

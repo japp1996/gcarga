@@ -57,7 +57,7 @@ class ProfileController extends Controller
                 Intervention::make($request->file('registro'))->save($registro, 70);
             }
         }
-        // End: Procesar foto
+        // End: Procesar foto 
         
         $empresa->first_name = $request->nombre;
         $empresa->last_name = $request->nombre;

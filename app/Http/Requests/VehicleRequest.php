@@ -67,7 +67,7 @@ class VehicleRequest extends FormRequest
             "carnet_circulacion" => "Carnet de circulación",
             "fotos" => "Foto",
             "bulk_id"=> "volumen",
-            "weight_id"=> "peso"
+            "weight_id"=> "peso",
         ];
     }
 

@@ -341,7 +341,7 @@
       this.carnet = `${this.urlP}${this.vehiculo.circulation_card}`;
       this.photo = `${this.urlP}${this.fotos[0].name}`;
       this.titulo = `${this.urlP}${this.vehiculo.property_title}`;
-      this.seguro = `${this.urlP}${this.vehiculo.asurance}`;
+      this.seguro = `${this.urlP}${this.vehiculo.asurance}`; 
 		}
 	}
 </script>

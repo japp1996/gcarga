@@ -287,7 +287,7 @@ class VehicleController extends Controller
                 $file->move($path, $file_name);
                 if($format != "pdf") {
                     ResizeImage::dimenssion($file_name, $format, $path);
-                }
+                } 
                 $titulo_propiedad = $path.$file_name;
             } else {
                 return response()->json(['error' => 'El tamano maximo para el carnet es de 2 MB'],422);

@@ -28,7 +28,7 @@
                   <table-cell>
                     <b style="font-size:12px;">{{ item.first_name }} {{ item.last_name }} </b>
                     <br>
-                    {{ item.dni }}  
+                    {{ item.dni }}   
                   </table-cell>
                   <table-cell><i class="material-icons prefix">bell</i></table-cell>
                   <table-cell>Valoración 

@@ -79,7 +79,7 @@
           </div>
         </form>
       </div>
-      <div class="col m4 s4">
+      <div class="col m4 s4"> 
         <div class="demo-separator mdl-cell--1-col"></div>
         <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
           <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">

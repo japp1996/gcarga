@@ -36,7 +36,7 @@ class EmpresaRequest extends FormRequest
             "max_transp" => "required",
             "seguro" => "required",
             "registro" => "required",
-            "acta" => "required"
+            "acta" => "required",
         ];
     }
     

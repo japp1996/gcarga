@@ -13,7 +13,7 @@
                   <table-head width="10%"></table-head>
                   <table-head class="th">Placa </table-head>
                   <table-head>Marca</table-head>
-                  <table-head>Conductor</table-head>
+                  <table-head>Conductor</table-head> 
                   <table-head width="5%" colspan="2">Acción</table-head>
               </table-row>
 

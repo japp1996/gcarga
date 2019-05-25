@@ -255,7 +255,7 @@
         formData.append('carnet_circulacion', this.form.circulacion_card)
         formData.append('fotos', this.form.fotos)
         //formData.append('doc_verificado', this.form.verified_docs)
-        formData.append('insured', this.form.insured)
+        formData.append('insured', this.form.insured) 
 
         this.sending = true
 
