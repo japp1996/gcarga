@@ -37,8 +37,13 @@
       <div class="container-fluid">
         @yield('content')
       </div>
-      <div id="modal1" class="modal">
-        <form>
+        <div id="modal1" class="modal">
+          
+          @if(Auth::user()->password_auth == null)
+            <form  onsubmit="configAuth(event)">  
+          @else
+            <form  onsubmit="accessAuth(event)">
+          @endif()
           <div class="modal-content">
             <h4>Contraseña de autorización</h4>
             @if(Auth::user()->password_auth == null) 
@@ -50,16 +55,12 @@
               <input type="password" autocomplete="off" id="passwordAuthCompany" class="col s12 m12">
               <label for="passwordAuthCompany">Ingrese la Contraseña</label>
             </div>
-          </div>
+          </div> 
           <div class="modal-footer">
-            @if(Auth::user()->password_auth == null)
-              <a href="#!" class="waves-effect waves-green btn btn-flat" @click="configAuth()">Aceptar</a>
-            @else
-              <a href="#!" class="waves-effect waves-green btn btn-flat" @click="accessAuth()">Aceptar</a>
-            @endif()
+              <button type="submit" class="waves-effect waves-green btn btn-flat" >Aceptar</a>
           </div>
         </form>
-    </div>
+      </div>
     </main>
 
     <!--  Scripts-->
