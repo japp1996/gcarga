@@ -35,7 +35,13 @@
           </div>
           <div class="row">
             <div class="col s4">
-              <a class="waves-effect waves-light btn" @click="formSubmit">Guardar</a>
+              <a class="waves-effect waves-light btn" :disabled="sending" @click="formSubmit">Guardar</a>
+            </div>
+             <div class="col s4">
+               <div v-if="sending" class="progress">
+                  <div class="indeterminate"></div> 
+                  <p>Guardando...</p>
+              </div>
             </div>
           </div>
         </form>
@@ -121,6 +127,7 @@
 		data() {  
 			return {
         url: urlBase,
+        sending:false,
 				form: {
 					dni: "",
           first_name: "",
@@ -188,8 +195,10 @@
         formData.append('max_transp', this.form.max_vehicle)
         formData.append('email', this.form.email)
         
+        this.sending=true
         axios.post(`${this.url}company/profile`, formData, config)
         .then(response => {
+          this.sending=false
           if(response.data.result) {
             swal("Exito", response.data.text, "success");
             window.location = ""
@@ -198,6 +207,7 @@
           }
         })
         .catch(error => {
+          this.sending=false
           let message  = "Disculpe, ha ocurrido un error";
           if (error.response.status == 422) {
               message = error.response.data.error;

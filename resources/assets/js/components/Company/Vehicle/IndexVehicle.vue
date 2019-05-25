@@ -81,7 +81,10 @@
               </a>
             </div>
             <div class="col s4">
-              <img :src="url+'img/gif-gcarga.gif'" v-if="sending" alt="" width="100%">
+               <div v-if="sending" class="progress">
+                  <div class="indeterminate"></div>
+                  <p>Guardando...</p>
+              </div>
             </div>
           </div>
         </form>
@@ -93,31 +96,22 @@
             <ul>
               <li>
                 <div class="col s6 file-field input-field">
-                    <input-file-document :file="carnet" v-on:file="onCarnetChange"
-                   :type-file="'carnet'" :can-document="true" :identification="''" :text="'Carnet'"
-                  ></input-file-document>
+                    <input-document :styles="{ margin: 'unset' }" v-on:file="onCarnetChange" :file="carnet" image :text="'Carnet'"></input-document>
       			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-      			        <input-file-document :file="titulo" v-on:file="onTituloChange"
-                   :type-file="'titulo'" :can-document="true" :identification="''" :text="'Titulo'"
-                  ></input-file-document>
+                    <input-document :styles="{ margin: 'unset' }" :file="titulo" v-on:file="onTituloChange" image :text="'Titulo'"></input-document>
       			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-      			        <input-file-document :file="seguro" v-on:file="onSeguroChange"
-                   :type-file="'seguro'" :can-document="true" :identification="''" :text="'Seguro'"
-                  ></input-file-document>
+                    <input-document :styles="{ margin: 'unset' }" :file="seguro" v-on:file="onSeguroChange" image :text="'Seguro'"></input-document>
       			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-      			        <span></span>
-                    <input-file-document :file="foto" v-on:file="onFotoChange"
-                   :type-file="'foto'" :can-document="true" :identification="''" :text="'Foto'"
-                  ></input-file-document>
+                    <input-document :styles="{ margin: 'unset' }" :file="foto" v-on:file="onFotoChange" image :text="'Foto'"></input-document>
       			    </div>
               </li>
               <!--p>
@@ -171,8 +165,9 @@
 					circulacion_card: "",
           //verified_docs: "",
           carga_asegurada: "",
-          fotos: {},
-          insured:false
+          fotos: "",
+          insured:false,
+          user_id: ""
 				},
         carnet: "",
         titulo: "",

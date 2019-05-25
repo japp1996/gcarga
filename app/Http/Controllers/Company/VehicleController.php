@@ -163,8 +163,8 @@ class VehicleController extends Controller
             $transporte->circulation_card = $carnet;
             $transporte->status = '1';
 
-            $request->doc_verificado = $request->doc_verificado === true ? 1 : 0;
-            $request->insured = $request->insured === true ? 1 : 0;
+            $request->doc_verificado = $request->doc_verificado == true ? 1 : 0;
+            $request->insured = $request->insured == true ? 1 : 0;
             
             $transporte->verified_docs = $request->doc_verificado;
             $transporte->insured = $request->insured;
@@ -190,6 +190,7 @@ class VehicleController extends Controller
             $query->with(['modelo']);
         }])
         ->with(['fotos'])
+        ->with(['user'])
         ->where('registered_id', Auth::user()->id)                    
         ->get();
         
@@ -301,7 +302,7 @@ class VehicleController extends Controller
         $transporte->color = $request->color;
         $transporte->year = $request->anio;
         $transporte->transport_id = $request->tipo;
-        $transporte->user_id = $request->user_id;
+        $transporte->user_id = $request->user_id == NULL ? NULL : $request->user_id;
         //$transporte->capacity = $request->capacidad;
        
         //$transporte->tipo_capacidad = $request->tipo_capacidad;
@@ -367,10 +368,14 @@ class VehicleController extends Controller
 
     public function drivers(Request $request)
     {
-        $drivers = User::whereDoesntHave('vehicle')
+        
+       $drivers = User::whereDoesntHave('vehicle', function($veh) use($request){
+            if (!is_null($request->id)){
+                $veh->where('user_id', $request->id);
+            } 
+        })
         ->where('user_id', Auth::user()->id)
         ->get();
-        
         return response()->json($drivers);
     }
 

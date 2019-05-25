@@ -97,7 +97,7 @@
             return e.gcplaca == id
         })
 
-        axios.post('admin/transportes/status', {id:id})
+        axios.post('company/vehicles/status', {id:id})
         .then(response => {
             if (response.data.result) {
               this.setTable[index].gcestatus = response.data.status

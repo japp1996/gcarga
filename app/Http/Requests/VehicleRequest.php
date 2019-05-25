@@ -39,13 +39,17 @@ class VehicleRequest extends FormRequest
             //"capacidad" => "required|numeric",
             //"tipo_capacidad" => "required",
             "serial" => "required|alpha_dash",
-            //"titulo_propiedad" => "required",
-            //"seguro" => "required",
-            //"carnet_circulacion" => "required",
-            //"fotos" => "required"
+            "titulo_propiedad" => "required",
+            "seguro" => "required",
+            "carnet_circulacion" => "required",
+            "fotos" => "required",
+            "user_id"  => "nullable",
+            "bulk_id" => "required",
+            "weight_id" => "required" 
+
         ];
-    }
-    
+    }    
+
     public function attributes()
     {
         return [
@@ -61,7 +65,9 @@ class VehicleRequest extends FormRequest
             "titulo_propiedad" => "Título de propiedad",
             "seguro" => "Seguro de carga",
             "carnet_circulacion" => "Carnet de circulación",
-            "fotos" => "Fotos"
+            "fotos" => "Foto",
+            "bulk_id"=> "volumen",
+            "weight_id"=> "peso"
         ];
     }
 

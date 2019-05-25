@@ -74,7 +74,13 @@
           </div>
           <div class="row">
             <div class="col s4">
-              <a class="waves-effect waves-light btn" @click="formSubmit">Guardar</a>
+              <a class="waves-effect waves-light btn" :disabled="sending"  @click="formSubmit">Guardar</a>
+            </div>
+            <div class="col s4">
+               <div v-if="sending" class="progress">
+                  <div class="indeterminate"></div>
+                  <p>Guardando...</p>
+              </div>
             </div>
           </div>
         </form>
@@ -125,6 +131,7 @@
 			return {
         bancos_todos: {},
         url: urlBase,
+        sending:false,
 				form: {
 					first_name: "",
 					last_name: "",
@@ -196,9 +203,10 @@
         formData.append('banco', this.form.bank_id)
         formData.append('avatar', this.form.avatar)
         formData.append('tipo_cuenta', this.form.bank_user.account_type)
-        
+        this.sending=true;
         axios.post('company/driver', formData, config)
         .then(response => {
+          this.sending=false
           if (response.data.result) {
             swal("Éxito", response.data.text, "success");
             setTimeout(() => {
@@ -207,8 +215,10 @@
           } else {
             swal("Éxito", "Disculpe el registro no se ha podido realizar", "warning");
           }
+          
         })
         .catch(error => {
+          this.sending=false
             let message  = "Disculpe, ha ocurrido un error";
             if (error.response.status == 422) {
                 message = error.response.data.error;

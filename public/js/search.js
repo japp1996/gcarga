@@ -8,25 +8,25 @@
     window.index.pipeline.reset();
 
     window.index.add({
-      href: '/transporte',
-      title: 'Transportes',
+      href: '/vehicles',
+      title: 'Vehículos',
       body: 'Éste módulo permite registrar los transportes de la empresa y programar sus viajes para las rutas asignadas.'
     });
 
     window.index.add({
-      href: '/conductor',
+      href: '/drivers',
       title: 'Conductores',
       body: 'Éste módulo permite registrar los conductores de la empresa y asignarles el transporte correspondiente.'
     });
 
     window.index.add({
-      href: '/contraseña',
+      href: '/password',
       title: 'Cambiar Contraseña',
       body: 'Éste módulo permite cambiar la contraseña.'
     });
 
     window.index.add({
-      href: '/sugerencias',
+      href: '/',
       title: 'Sugerencia',
       body: 'Muestra la sugerencia del día al usuario para su ayuda.'
     });

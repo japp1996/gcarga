@@ -106,44 +106,6 @@ const app = new Vue({
             .then(this.onSuccess)
             .catch(error => this.errors.record(error.response.data.errors));
          },
-
-        accessAuth() {
-          console.log("good")
-          let pass = document.getElementById("passwordAuthCompany").value
-          axios.post("company/passwordCompany", {'gcpassword': pass})
-          .then(response => {
-            console.log(response)
-            if (response.data.result) {
-              $('#modal1').modal('close')
-                window.location = response.data.location
-                console.log(response.data.location)
-            } else {
-              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
-            }
-          })
-          .catch(error => {
-            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
-          })
-  
-        },
-  
-        configAuth() {
-          let pass = document.getElementById("passwordAuthCompany").value
-          console.log(pass)
-          axios.post("company/passwordConfig", {'gcpassword': pass})
-          .then(response => {
-            if (response.data.result) {
-              console.log(response)
-              $('#modal1').modal('close')
-              window.location = response.data.location
-            } else {
-              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
-            }
-          })
-          .catch(error => {
-            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
-          })
-        }
       },
       data: {
         defaultColor: '#FF0000'

@@ -102,32 +102,23 @@
             <ul>
               <li>
                 <div class="col s6 file-field input-field">
-                    <input-file-document :file="gccarnet_circ" image v-on:file="onCarnetChange"
-                   :type-file="'carnet'" :can-document="true" :identification="''" :text="'Carnet'"
-                  ></input-file-document>
-                </div>
+                    <input-document :styles="{ margin: 'unset' }" v-on:file="onCarnetChange" :file="carnet" image :text="'Carnet'"></input-document>
+      			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-                    <input-file-document :file="gctitulo_prop" image v-on:file="onTituloChange"
-                   :type-file="'titulo'" :can-document="true" :identification="''" :text="'Titulo'"
-                  ></input-file-document>
-                </div>
+                    <input-document :styles="{ margin: 'unset' }" :file="titulo" v-on:file="onTituloChange" image :text="'Titulo'"></input-document>
+      			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-                    <input-file-document :file="seguro" image v-on:file="onSeguroChange"
-                   :type-file="'seguro'" :can-document="true" :identification="''" :text="'Seguro'"
-                  ></input-file-document>
-                </div>
+                    <input-document :styles="{ margin: 'unset' }" :file="seguro" v-on:file="onSeguroChange" image :text="'Seguro'"></input-document>
+      			    </div>
               </li>
               <li>
                 <div class="col s6 file-field input-field">
-                    <span></span>
-                    <input-file-document :file="photo" image v-on:file="onFotoChange"
-                   :type-file="'foto'" :can-document="true" :identification="''" :text="'Foto'"
-                  ></input-file-document>
-                </div>
+                    <input-document :styles="{ margin: 'unset' }" :file="photo" v-on:file="onFotoChange" image :text="'Foto'"></input-document>
+      			    </div>
               </li>
             </ul>
             <p>
@@ -155,6 +146,7 @@
         tamano_t: {},
         marca_t: {},
         modelo_t: {},
+        drivers:[],
         bulk_t: {},
         weight_t: {},
         sending: false,
@@ -177,11 +169,11 @@
 					circulation_card: "",
           verified_docs: "",
           carga_asegurada: "",
-          fotos: {}
+          fotos: ""
 				},
         image: "",
-        gctitulo_prop: "",
-        gccarnet_circ: "",
+        titulo: "",
+        carnet: "",
         seguro: "",
         photo: ""
 			}
@@ -226,7 +218,7 @@
         })
       },
       drivers_availables() {
-        axios.post(`${this.url}company/vehicles/drivers-available`)
+        axios.post(`company/vehicles/drivers-available`,{id:this.form.id})
         .then(response => {
           console.log(response)
           this.drivers = response.data
@@ -235,17 +227,44 @@
           this.drivers = []
         })
       },
+      validFormat(type){
+        if(type == "image/jpeg" || type == "image/jpg" || type == "image/png" || type == "application/pdf"){
+          return true
+        }  else{
+          swal("advertencia","formato invalido, se permite solo archivos de tipo img y pdf","warning")
+          return false
+        }
+      },
       onFotoChange(e) {
-        this.form.fotos = e.file
+        if (this.validFormat(e.file.type)) {
+          this.form.fotos = e.file
+        } else {
+          this.photo = `${this.urlP}${this.fotos[0].name}`;
+        }
       },
       onCarnetChange(e) {
-        this.form.circulation_card = e.file
+        if (this.validFormat(e.file.type)) {
+          this.form.circulation_card = e.file
+        } else {
+          this.carnet = `${this.urlP}${this.vehiculo.circulation_card}`;
+        }
+        
       },
       onSeguroChange(e) {
-        this.form.asurance = e.file
+        if (this.validFormat(e.file.type)) {
+           this.form.asurance = e.file
+        } else {
+            this.seguro = `${this.urlP}${this.vehiculo.asurance}`;
+        }
+       
       },
       onTituloChange(e) {
-        this.form.property_title = e.file
+        if (this.validFormat(e.file.type)) {
+          this.form.property_title = e.file
+        } else {
+          this.titulo = `${this.urlP}${this.vehiculo.property_title}`;
+        }
+        
       },
       _setFile(file) {
         this.form.image = file.file;
@@ -256,7 +275,7 @@
         const config = {
           headers: { 'content-type': 'multipart/form-data' }
         }
-        var carga = this.form.gccarga_asegurada == true ? 1 : 0
+        var carga = this.form.insured == true ? 1 : 0
         //var doc = this.form.gcdoc_verificado == true ? 1 : 0
         let formData = new FormData()
         formData.append('id', this.form.id)
@@ -279,7 +298,7 @@
         formData.append('fotos', this.form.fotos)
 
         //formData.append('doc_verificado', this.form.verified_docs)
-        formData.append('insured', this.form.insured)
+        formData.append('insured', carga)
         formData.append('_method', 'PUT');
 
         axios.post(`${this.urlP}company/vehicle/`+this.form.id, formData, config)
@@ -315,14 +334,14 @@
       this.weight_t = this.peso
       this.modelos()
       this.drivers_availables()
+      this.form.user_id = this.vehiculo.user_id == null ? "" : this.vehiculo.user_ids 
       this.form.verified_docs = this.vehiculo.verified_docs == 1 ? true : false
       this.form.insured = this.vehiculo.insured == 1 ? true : false
       
-      this.gccarnet_circ = `${this.urlP}${this.vehiculo.circulation_card}`;
+      this.carnet = `${this.urlP}${this.vehiculo.circulation_card}`;
       this.photo = `${this.urlP}${this.fotos[0].name}`;
-      this.gctitulo_prop = `${this.urlP}${this.vehiculo.property_title}`;
+      this.titulo = `${this.urlP}${this.vehiculo.property_title}`;
       this.seguro = `${this.urlP}${this.vehiculo.asurance}`;
-
 		}
 	}
 </script>

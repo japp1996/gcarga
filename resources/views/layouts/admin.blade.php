@@ -53,7 +53,12 @@
         @yield('content')
       </div>
       <div id="modal1" class="modal">
-        <form>
+        
+          @if(Auth::user()->password_auth == null)
+            <form  onsubmit="configAuth(event)">  
+          @else
+            <form  onsubmit="accessAuth(event)">
+          @endif()
           <div class="modal-content">
             <h4>Contraseña de autorización</h4>
             @if(Auth::user()->password_auth == null) 
@@ -67,11 +72,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            @if(Auth::user()->password_auth == null)
-              <a href="#!" class="waves-effect waves-green btn btn-flat" @click="configAuth()">Aceptar</a>
-            @else
-              <a href="#!" class="waves-effect waves-green btn btn-flat" @click="accessAuth()">Aceptar</a>
-            @endif()
+              <button type="submit" class="waves-effect waves-green btn btn-flat" >Aceptar</a>
           </div>
         </form>
       </div>
@@ -111,6 +112,46 @@
           $('#'+eye).addClass('fa-eye')
         }
       }
+
+      function accessAuth(e) {
+          e.preventDefault()
+          console.log("good")
+          let pass = document.getElementById("passwordAuthCompany").value
+          axios.post("company/passwordCompany", {'gcpassword': pass})
+          .then(response => {
+            console.log(response)
+            if (response.data.result) {
+              $('#modal1').modal('close')
+                window.location = response.data.location
+                console.log(response.data.location)
+            } else {
+              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
+            }
+          })
+          .catch(error => {
+            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
+          })
+  
+        }
+  
+        function configAuth(e) {
+          e.preventDefault()
+          let pass = document.getElementById("passwordAuthCompany").value
+          console.log(pass)
+          axios.post("company/passwordConfig", {'gcpassword': pass})
+          .then(response => {
+            if (response.data.result) {
+              console.log(response)
+              $('#modal1').modal('close')
+              window.location = response.data.location
+            } else {
+              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
+            }
+          })
+          .catch(error => {
+            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
+          })
+        }
       
     </script>
 </body>
