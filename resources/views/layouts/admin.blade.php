@@ -115,15 +115,13 @@
 
       function accessAuth(e) {
           e.preventDefault()
-          console.log("good")
+          
           let pass = document.getElementById("passwordAuthCompany").value
           axios.post("company/passwordCompany", {'gcpassword': pass})
           .then(response => {
-            console.log(response)
             if (response.data.result) {
               $('#modal1').modal('close')
                 window.location = response.data.location
-                console.log(response.data.location)
             } else {
               swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
             }
@@ -137,11 +135,9 @@
         function configAuth(e) {
           e.preventDefault()
           let pass = document.getElementById("passwordAuthCompany").value
-          console.log(pass)
           axios.post("company/passwordConfig", {'gcpassword': pass})
           .then(response => {
             if (response.data.result) {
-              console.log(response)
               $('#modal1').modal('close')
               window.location = response.data.location
             } else {

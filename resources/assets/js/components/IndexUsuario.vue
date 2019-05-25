@@ -62,7 +62,7 @@
 								<i class='fa fa-lock g-pr-5'></i>
 							</span> 
 							<input id="password_confirmation" v-model="form.password_confirmation" class="form-control" type="password" name="password_confirmation" placeholder="Confirma tu contraseña" >
-							<span toggle="#password-field" id="eye2" @click="showPassword('password2','eye2')" class="fa fa-fw fa-eye fa-1x field-icon toggle-password"></span>
+							<span toggle="#password-field" id="eye2" @click="showPassword('password_confirmation','eye2')" class="fa fa-fw fa-eye fa-1x field-icon toggle-password"></span>
 						</div>
 					</div>
 					<div class="row">

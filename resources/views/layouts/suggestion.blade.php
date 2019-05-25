@@ -81,6 +81,41 @@
       $('#editProfile').click(function(){
         $('#modal1').modal('open')
       })
+
+      function accessAuth(e) {
+          e.preventDefault()
+          let pass = document.getElementById("passwordAuthCompany").value
+          axios.post("company/passwordCompany", {'gcpassword': pass})
+          .then(response => {
+            if (response.data.result) {
+              $('#modal1').modal('close')
+                window.location = response.data.location
+            } else {
+              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
+            }
+          })
+          .catch(error => {
+            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
+          })
+  
+        }
+  
+        function configAuth(e) {
+          e.preventDefault()
+          let pass = document.getElementById("passwordAuthCompany").value
+          axios.post("company/passwordConfig", {'gcpassword': pass})
+          .then(response => {
+            if (response.data.result) {
+              $('#modal1').modal('close')
+              window.location = response.data.location
+            } else {
+              swal("Atención", "Usted ha ingresado una contraseña inválida", "info")
+            }
+          })
+          .catch(error => {
+            swal("Disculpe, ha habido un problema técnico. Pedimos disculpas por las molestias ocasionadas")
+          })
+        }
     </script>
 </body>
 </html>
