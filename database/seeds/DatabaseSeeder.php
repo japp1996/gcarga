@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BrandsTableSeeder::class);
         $this->call(ModeloTableSeeder::class);
         $this->call(TransportTableSeeder::class);
+        $this->call(WeightBulkTableSeeder::class);
     }
 }

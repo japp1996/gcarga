@@ -18,7 +18,7 @@ class TransportTableSeeder extends Seeder
             $transporte = \App\Models\Transport::create([
                 'name' => $transport['name'],
                 'status' => '1',
-                'registered_by' => 1
+                'registered_by' => 3
             ]);
             $this->command->info('Creating Transport '. $transport['name']);
         }

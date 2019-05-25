@@ -13,7 +13,7 @@ class BankTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info('Truncating Bank, BankUser, Brands, Models and Transport tables');
+        $this->command->info('Truncating Bank, BankUser, Brands, Models, Weights, Bulks and Transport tables');
         $this->truncateBankTables();
         $banks = config('database_seeder.banks');
         foreach ($banks as $bank) {
@@ -49,6 +49,8 @@ class BankTableSeeder extends Seeder
         \App\Models\Vehicle::truncate();
         \App\Models\VehiclePhoto::truncate();
         \App\Models\Codes::truncate();
+        \App\Models\Weight::truncate();
+        \App\Models\Bulk::truncate();
         \App\Models\Audit::truncate();
         Schema::enableForeignKeyConstraints();
     }
