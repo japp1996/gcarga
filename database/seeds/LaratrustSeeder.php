@@ -12,7 +12,7 @@ class LaratrustSeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info('Truncating User, Role and Permission tables');
+        $this->command->info('Truncating User, Person, PhoneUsers, Role and Permission tables');
         $this->truncateLaratrustTables();
 
         $config = config('laratrust_seeder.role_structure');
@@ -70,6 +70,11 @@ class LaratrustSeeder extends Seeder
                 'max_vehicle' => 1,
             ]);
 
+            $phone = \App\Models\PhoneUsers::create([
+                'user_id' => $user->id,
+                'phone' => 04125555555
+            ]);
+
             $user->attachRole($role);
         }
 
@@ -121,6 +126,8 @@ class LaratrustSeeder extends Seeder
         DB::table('permission_user')->truncate();
         DB::table('role_user')->truncate();
         \App\User::truncate();
+        \App\Models\Person::truncate();
+        \App\Models\PhoneUsers::truncate();    
         \App\Models\Role::truncate();
         \App\Models\Permission::truncate();
         Schema::enableForeignKeyConstraints();
