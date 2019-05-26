@@ -302,7 +302,7 @@ class VehicleController extends Controller
         $transporte->color = $request->color;
         $transporte->year = $request->anio;
         $transporte->transport_id = $request->tipo;
-        $transporte->user_id = $request->user_id == NULL ? NULL : $request->user_id;
+        $transporte->user_id = $request->user_id == NULL || $request->user_id == "" ? NULL : $request->user_id;
         //$transporte->capacity = $request->capacidad;
        
         //$transporte->tipo_capacidad = $request->tipo_capacidad;
@@ -372,9 +372,10 @@ class VehicleController extends Controller
        $drivers = User::whereDoesntHave('vehicle', function($veh) use($request){
             if (!is_null($request->id)){
                 $veh->where('user_id', $request->id);
-            } 
+            }
         })
         ->where('user_id', Auth::user()->id)
+        ->where('status', '1')
         ->get();
         return response()->json($drivers);
     }

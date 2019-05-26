@@ -334,7 +334,7 @@
       this.weight_t = this.peso
       this.modelos()
       this.drivers_availables()
-      this.form.user_id = this.vehiculo.user_id == null ? "" : this.vehiculo.user_ids 
+      this.form.user_id = this.vehiculo.user_id == null || this.vehiculo.user_id == undefined ? "" : this.vehiculo.user_ids 
       this.form.verified_docs = this.vehiculo.verified_docs == 1 ? true : false
       this.form.insured = this.vehiculo.insured == 1 ? true : false
       
